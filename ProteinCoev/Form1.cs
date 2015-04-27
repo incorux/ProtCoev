@@ -58,10 +58,10 @@ namespace ProteinCoev
                     proteins.Last().Sequence = String.Concat(proteins.Last().Sequence, line.Trim());
                 }
             }
-            AlignmentTabs.Controls.Add(new Tab(rawFileName, proteins));
+            var newTab = new Tab(rawFileName, proteins);
+            AlignmentTabs.Controls.Add(newTab);
             LoadCombo();
         }
-
         private void LoadCombo()
         {
             comboOrganisms.Items.Clear();
@@ -80,7 +80,18 @@ namespace ProteinCoev
                 _worker = new Worker(progressBar);
             if (_worker.IsBusy) return;
 
-            _worker.Run((Tab)AlignmentTabs.SelectedTab, numericIdentity.Value);
+            ((Tab)AlignmentTabs.SelectedTab).DrawAlignments();
+
+            _worker.Run(new ArgumentWrapper
+                        {
+                            Tab = AlignmentTabs.SelectedTab,
+                            Identity = (int)numericIdentity.Value,
+                            CreditStart = (int)numericStartingCredit.Value,
+                            CreditGain = (int)numericCreditGain.Value,
+                            CreditLoss = (int)numericCreditLoss.Value,
+                            UseBase = checkBase.Checked,
+                            UseTailing = checkTailing.Checked
+                        });
         }
 
         private void ColorButtonClick(object sender, EventArgs e)

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ProteinCoev
 {
-    class Tab : TabPage
+    public class Tab : TabPage
     {
         public List<Protein> Proteins;
         public List<int> BaseColumns;

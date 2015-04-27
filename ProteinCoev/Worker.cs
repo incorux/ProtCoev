@@ -11,7 +11,6 @@ namespace ProteinCoev
     {
         private ProgressBar _pb;
         private Tab _tab;
-        private decimal _identity;
         public Worker(ProgressBar pb)
         {
             _pb = pb;
@@ -28,11 +27,10 @@ namespace ProteinCoev
             _pb.Value = 100;
         }
 
-        public void Run(Tab tab, decimal identity)
+        public void Run(ArgumentWrapper wrapper)
         {
-            _identity = identity;
-            _tab = tab;
-            RunWorkerAsync(tab);
+            _tab = (Tab)wrapper.Tab;
+            RunWorkerAsync(wrapper);
         }
 
         private void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -41,16 +39,17 @@ namespace ProteinCoev
         }
         private void GetBase(object sender, DoWorkEventArgs doWorkEventArgs)
         {
-            var tab = (Tab)doWorkEventArgs.Argument;
+            var wrapper = (ArgumentWrapper)doWorkEventArgs.Argument;
+            var tab = (Tab)wrapper.Tab;
             var proteins = tab.Proteins;
             var baseColumns = new List<int>();
             var seqLength = proteins.First().Sequence.Length;
             var seqNum = proteins.Count;
-            var minimum = Math.Ceiling(seqNum * _identity / 100);
+            var minimum = Math.Ceiling((decimal)(seqNum * wrapper.Identity / 100));
+            var identityTable = new int[seqLength];
             for (var i = 0; i < seqLength; i++)
             {
                 var spaces = 0;
-                var acids = AminoAcids.GetAminoAcidDictionary();
                 var clusters = Blosum.GetClusters();
                 for (var j = 0; j < seqNum; j++)
                 {
@@ -63,57 +62,80 @@ namespace ProteinCoev
                     catch (KeyNotFoundException) { }
                 }
                 var max = clusters.Max(n => n.Count);
+                ///////////// IDENTITY ////////////////////
                 if (max >= minimum)
-                {
                     baseColumns.Add(i);
-                }
-                ///////////////////////////////////
-                /*for (var j = 0; j < seqNum; j++)
-                {
-                    try
-                    {
-                        var c = proteins[j].Sequence[i];
-                        if (c == '-') spaces++;
-                        else acids[c]++;
-                    }
-                    catch (KeyNotFoundException) { }
-                }
-                var readChars = 0;
-                while (seqNum - readChars - spaces >= minimum)
-                {
-                    var max = acids.Values.Max();
-                    var c = acids.Where(n => n.Value == max).Select(n => n.Key).First();
-                    var row = (int)c.ToAcid();
-                    var columnsIndices = new List<int>();
-                    for (var j = 0; j < 20; j++)
-                    {
-                        if (Blosum.matrix[row][j] > 0)
-                            columnsIndices.Add(j);
-                    }
-                    var count = 0;
-                    foreach (var columnsIndex in columnsIndices)
-                    {
-                        var acid = columnsIndex.ToAcid();
-                        count += acids[acid];
-                        acids.Remove(acid);
 
-                    }
-                    if (count >= minimum)
-                    {
-                        baseColumns.Add(i);
-                        break;
-                    }
-                    else
-                    {
-                        readChars += count;
-                    }
-                }*/
+                identityTable[i] = max;
 
                 float dividend = i;
                 var progress = dividend / seqLength * 100;
                 ReportProgress((int)progress);
             }
             tab.BaseColumns = baseColumns;
+            ////////////// BASE  //////////////////////
+            if (wrapper.UseBase)
+            {
+                var credit = wrapper.CreditStart;
+                var bestCluster = new Cluster { Count = -1 };
+                var currentCluster = new Cluster();
+                var lastGain = baseColumns.First();
+                var bestLastGain = 0;
+                for (var j = baseColumns.First(); j < seqLength; j++)
+                {
+                    currentCluster.List.Add(j);
+                    currentCluster.Count++;
+                    if (baseColumns.Contains(j))
+                    {
+                        credit += wrapper.CreditGain;
+                        lastGain = j;
+                    }
+                    else
+                    {
+                        credit -= wrapper.CreditLoss;
+                    }
+                    if (credit >= 0) continue;
+                    if (currentCluster.Count > bestCluster.Count)
+                    {
+                        bestCluster = currentCluster;
+                        bestLastGain = lastGain;
+                    }
+                    credit = wrapper.CreditStart;
+                    currentCluster = new Cluster();
+                }
+                ///////////////////////////// BASE TAIL  ///////////////////////////////////////
+                if (wrapper.UseTailing)
+                {
+                    var tailLen = bestCluster.List.Last() - bestLastGain;
+                    bestCluster.List.RemoveRange(bestCluster.List.Count - 5, tailLen);
+                    while (tailLen > 0)
+                    {
+                        tailLen--;
+                        var first = bestCluster.List.First();
+                        var last = bestCluster.List.Last();
+                        if (first == 0)
+                        {
+                            for (var i = 0; i < tailLen; i++)
+                            {
+                                bestCluster.List.Add(last + i);
+                            }
+                        }
+                        else if (last == seqNum)
+                        {
+                            for (var i = 0; i < tailLen; i++)
+                            {
+                                bestCluster.List.Add(first - i);
+                            }
+                        }
+                        var beforeSpaces = identityTable[first - 1];
+                        var afterSpaces = identityTable[last + 1];
+                        if (beforeSpaces < afterSpaces)
+                            bestCluster.List.Add(last + 1);
+                        else bestCluster.List.Insert(0, first - 1);
+                    }
+                }
+                tab.BaseColumns = bestCluster.List;
+            }
         }
     }
 }

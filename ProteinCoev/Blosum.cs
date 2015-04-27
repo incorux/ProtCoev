@@ -39,12 +39,12 @@ namespace ProteinCoev
             for (var i = 0; i < 20; i++)
             {
                 if (!unused.Contains(i)) continue;
-                var cluster = new Cluster { AcidList = new List<Aminoacids> { i.ToAcid().ToAcid() } };
+                var cluster = new Cluster { List = new List<int> { i } };
                 for (var j = i + 1; j < 20; j++)
                 {
-                    if (matrix[i][j] <= 0) continue;
+                    if (!unused.Contains(j) || matrix[i][j] <= 0) continue;
                     unused.Remove(j);
-                    cluster.AcidList.Add(j.ToAcid().ToAcid());
+                    cluster.List.Add(j);
                 }
                 clusters.Add(cluster);
             }
