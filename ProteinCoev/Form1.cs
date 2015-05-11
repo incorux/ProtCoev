@@ -13,6 +13,7 @@ namespace ProteinCoev
         private Color _highlightColor = Color.Gray;
         private List<string> OrganismList = new List<string>();
         private Worker _worker;
+        private List<Protein> proteins { get { return ((Tab)AlignmentTabs.SelectedTab).Proteins; } }
         //
         public Form1()
         {
@@ -38,8 +39,9 @@ namespace ProteinCoev
             var proteins = new List<Protein>();
             var rawFileName = fileName.Split('\\').Last().Split('.').First();
             var fileReader = new StreamReader(fileName);
+            var i = 0;
             string line;
-            while ((line = fileReader.ReadLine()) != null)
+            while ((line = fileReader.ReadLine()) != null && i++ < 500)
             {
                 if (line[0] == '>')
                 {
@@ -55,13 +57,15 @@ namespace ProteinCoev
                 }
                 else
                 {
+                    //proteins.Add(new Protein{Organism = "All",FileName = rawFileName});
                     proteins.Last().Sequence = String.Concat(proteins.Last().Sequence, line.Trim());
                 }
             }
-            var newTab = new Tab(rawFileName, proteins);
+            var newTab = new Tab(rawFileName, proteins, labelPosition);
             AlignmentTabs.Controls.Add(newTab);
             LoadCombo();
         }
+
         private void LoadCombo()
         {
             comboOrganisms.Items.Clear();
@@ -80,7 +84,8 @@ namespace ProteinCoev
                 _worker = new Worker(progressBar);
             if (_worker.IsBusy) return;
 
-            ((Tab)AlignmentTabs.SelectedTab).DrawAlignments();
+            var tab = ((Tab)AlignmentTabs.SelectedTab);
+            tab.DrawAlignments();
 
             _worker.Run(new ArgumentWrapper
                         {
@@ -100,13 +105,56 @@ namespace ProteinCoev
             if (cd.ShowDialog() != DialogResult.OK) return;
             _highlightColor = cd.Color;
             ColorButton.BackColor = cd.Color;
-            ((Tab)AlignmentTabs.SelectedTab).Highlight(cd.Color);
         }
 
         private void ComboOrganismsSelectedIndexChanged(object sender, EventArgs e)
         {
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             tab.DrawAlignments(comboOrganisms.SelectedItem.ToString());
+        }
+
+        private void Button1Click(object sender, EventArgs e)
+        {
+            var tab = ((Tab)AlignmentTabs.SelectedTab);
+            var proteins = tab.Proteins;
+            var mi = new MI(proteins, tab.BaseColumns);
+            var mis = mi.GetMIs();
+        }
+
+        private void Button2Click(object sender, EventArgs e)
+        {
+            var tab = ((Tab)AlignmentTabs.SelectedTab);
+            var proteins = tab.Proteins;
+            var mi = new MI(proteins, tab.BaseColumns);
+            var mis = mi.GetMIs();
+            var MIp = new MIp(mis);
+            MIp.GetMIps();
+        }
+
+        private void Button3Click(object sender, EventArgs e)
+        {
+            var di = new DI(proteins);
+            di.getDI();
+        }
+
+        private void Button4Click(object sender, EventArgs e)
+        {
+            var tab = ((Tab)AlignmentTabs.SelectedTab);
+            if (checkCompareColumn.Checked)
+            {
+                tab.Compare(_highlightColor, -1, -1, (int)numericColumn1.Value, (int)numericColumn2.Value);
+            }
+            if (checkCompareRow.Checked)
+            {
+                tab.Compare(_highlightColor, (int)numericRow1.Value, (int)numericRow2.Value, -1, -1);
+            }
+        }
+
+        private void Button5Click(object sender, EventArgs e)
+        {
+            var tab = ((Tab)AlignmentTabs.SelectedTab);
+            var arr = proteins.ToCharArrayRestricted(tab.BaseColumns);
+            var psicov = new Psicov(arr);
         }
     }
 }

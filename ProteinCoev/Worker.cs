@@ -23,7 +23,7 @@ namespace ProteinCoev
 
         void WorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _tab.Highlight(Color.Gray);
+            _tab.HighlightBase(Color.Gray);
             _pb.Value = 100;
         }
 
@@ -72,70 +72,69 @@ namespace ProteinCoev
                 var progress = dividend / seqLength * 100;
                 ReportProgress((int)progress);
             }
+            tab.identities = identityTable.ToList();
             tab.BaseColumns = baseColumns;
             ////////////// BASE  //////////////////////
-            if (wrapper.UseBase)
+            if (!wrapper.UseBase) return;
+            var credit = wrapper.CreditStart;
+            var bestCluster = new Cluster { Count = -1 };
+            var currentCluster = new Cluster();
+            var lastGain = baseColumns.First();
+            var bestLastGain = 0;
+            for (var j = baseColumns.First(); j < seqLength; j++)
             {
-                var credit = wrapper.CreditStart;
-                var bestCluster = new Cluster { Count = -1 };
-                var currentCluster = new Cluster();
-                var lastGain = baseColumns.First();
-                var bestLastGain = 0;
-                for (var j = baseColumns.First(); j < seqLength; j++)
+                currentCluster.List.Add(j);
+                currentCluster.Count++;
+                if (baseColumns.Contains(j))
                 {
-                    currentCluster.List.Add(j);
-                    currentCluster.Count++;
-                    if (baseColumns.Contains(j))
-                    {
-                        credit += wrapper.CreditGain;
-                        lastGain = j;
-                    }
-                    else
-                    {
-                        credit -= wrapper.CreditLoss;
-                    }
-                    if (credit >= 0) continue;
-                    if (currentCluster.Count > bestCluster.Count)
-                    {
-                        bestCluster = currentCluster;
-                        bestLastGain = lastGain;
-                    }
-                    credit = wrapper.CreditStart;
-                    currentCluster = new Cluster();
+                    credit += wrapper.CreditGain;
+                    lastGain = j;
                 }
-                ///////////////////////////// BASE TAIL  ///////////////////////////////////////
-                if (wrapper.UseTailing)
+                else
                 {
-                    var tailLen = bestCluster.List.Last() - bestLastGain;
-                    bestCluster.List.RemoveRange(bestCluster.List.Count - 5, tailLen);
-                    while (tailLen > 0)
-                    {
-                        tailLen--;
-                        var first = bestCluster.List.First();
-                        var last = bestCluster.List.Last();
-                        if (first == 0)
-                        {
-                            for (var i = 0; i < tailLen; i++)
-                            {
-                                bestCluster.List.Add(last + i);
-                            }
-                        }
-                        else if (last == seqNum)
-                        {
-                            for (var i = 0; i < tailLen; i++)
-                            {
-                                bestCluster.List.Add(first - i);
-                            }
-                        }
-                        var beforeSpaces = identityTable[first - 1];
-                        var afterSpaces = identityTable[last + 1];
-                        if (beforeSpaces < afterSpaces)
-                            bestCluster.List.Add(last + 1);
-                        else bestCluster.List.Insert(0, first - 1);
-                    }
+                    credit -= wrapper.CreditLoss;
                 }
-                tab.BaseColumns = bestCluster.List;
+                if (credit >= 0) continue;
+                if (currentCluster.Count > bestCluster.Count)
+                {
+                    bestCluster = currentCluster;
+                    bestLastGain = lastGain;
+                }
+                credit = wrapper.CreditStart;
+                currentCluster = new Cluster();
             }
+            ///////////////////////////// BASE TAIL  ///////////////////////////////////////
+            if (wrapper.UseTailing)
+            {
+                var tailLen = bestCluster.List.Last() - bestLastGain;
+                bestCluster.List.RemoveRange(bestCluster.List.Count - tailLen, tailLen);
+                while (tailLen > 0)
+                {
+                    tailLen--;
+                    var first = bestCluster.List.First();
+                    var last = bestCluster.List.Last();
+                    if (first == 0)
+                    {
+                        for (var i = 0; i < tailLen; i++)
+                        {
+                            bestCluster.List.Add(last + i);
+                        }
+                    }
+                    else if (last == seqNum)
+                    {
+                        for (var i = 0; i < tailLen; i++)
+                        {
+                            bestCluster.List.Add(first - i);
+                        }
+                    }
+                    var beforeSpaces = identityTable[first - 1];
+                    var afterSpaces = identityTable[last + 1];
+                    if (beforeSpaces < afterSpaces)
+                        bestCluster.List.Add(last + 1);
+                    else bestCluster.List.Insert(0, first - 1);
+                }
+            }
+            tab.BaseColumns = bestCluster.List;
         }
     }
 }

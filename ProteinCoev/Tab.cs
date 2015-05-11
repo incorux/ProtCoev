@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ProteinCoev
@@ -11,16 +12,35 @@ namespace ProteinCoev
         public List<Protein> Proteins;
         public List<int> BaseColumns;
         public string Label;
+        public double[,] MIs;
+        public List<int> identities;
         private RichTextBox alignmentArea;
+        private Label positionLabel;
+        private int seqLength { get { return Proteins.First().Sequence.Length; } }
 
-        public Tab(string label, List<Protein> proteins)
+        public Tab(string label, List<Protein> proteins, Label positionLabel)
         {
             Label = label;
             Proteins = proteins;
+            this.positionLabel = positionLabel;
             alignmentArea = new RichTextBox { Font = new Font("Courier New", 12), WordWrap = false, Dock = DockStyle.Fill };
             Controls.Add(alignmentArea);
             DrawAlignments();
             Text = label;
+            alignmentArea.MouseDown += alignmentArea_MouseDown;
+        }
+
+        void alignmentArea_MouseDown(object sender, MouseEventArgs e)
+        {
+            var richTextBox = sender as RichTextBox;
+            var column = (richTextBox.GetCharIndexFromPosition(e.Location) % (Proteins.First().Sequence.Length + 1));
+            try
+            {
+                var identity = identities[column];
+                if (richTextBox != null)
+                    positionLabel.Text = String.Format("Column: {0},\n identity: {1}", column, identity);
+            }
+            catch (NullReferenceException) { }
         }
 
         public override sealed string Text
@@ -29,26 +49,56 @@ namespace ProteinCoev
             set { base.Text = value; }
         }
 
-        public void Highlight(Color color)
+        public void HighlightBase(Color color)
         {
-            var seqLength = Proteins.First().Sequence.Length;
+            foreach (var baseColumn in BaseColumns)
+            {
+                HighlightColumn(color, baseColumn);
+            }
+        }
+
+        private void HighlightRow(Color color, int row)
+        {
+            alignmentArea.SelectionStart = row * seqLength + row;
+            alignmentArea.SelectionLength = seqLength + 1;
+            alignmentArea.SelectionBackColor = color;
+        }
+
+        private void HighlightColumn(Color color, int column)
+        {
             for (var i = 0; i < Proteins.Count; i++)
             {
-                foreach (var baseColumn in BaseColumns)
-                {
-                    alignmentArea.SelectionStart = baseColumn + i * seqLength + i;
-                    alignmentArea.SelectionLength = 1;
-                    alignmentArea.SelectionBackColor = color;
-                }
+                alignmentArea.SelectionStart = column + i * seqLength + i;
+                alignmentArea.SelectionLength = 1;
+                alignmentArea.SelectionBackColor = color;
             }
+        }
+
+        public void Compare(Color color, int row1 = 0, int row2 = 0, int column1 = 0, int column2 = 0)
+        {
+            if (row1 >= 0)
+                HighlightRow(color, row1);
+            if (row2 >= 0)
+                HighlightRow(color, row2);
+            if (column1 >= 0)
+                HighlightColumn(color, column1);
+            if (column2 >= 0)
+                HighlightColumn(color, column2);
         }
 
         public void DrawAlignments(string organism = "All")
         {
             alignmentArea.Text = "";
-            foreach (var protein in Proteins.Where(protein => organism.Equals("All") || protein.Organism.Equals(organism)))
+            var arr = Proteins.ToCharArray();
+            for (var i = 0; i < Proteins.Count; i++)
             {
-                alignmentArea.AppendText(protein.Sequence + "\n");
+                var sb = new StringBuilder();
+
+                for (int j = 0; j < seqLength; j++)
+                {
+                    sb.Append(arr[i, j]);
+                }
+                alignmentArea.AppendText(sb + "\n");
             }
         }
     }

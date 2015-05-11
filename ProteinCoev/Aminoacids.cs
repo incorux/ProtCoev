@@ -9,6 +9,10 @@ namespace ProteinCoev
         {
             return typeof(Aminoacids).GetEnumNames().ToDictionary(enumName => enumName[0], enumName => 0);
         }
+        public static Dictionary<char, double> GetAminoAcidDictionaryDouble()
+        {
+            return typeof(Aminoacids).GetEnumNames().ToDictionary(enumName => enumName[0], enumName => 0.0);
+        }
     }
 
     public enum Aminoacids
