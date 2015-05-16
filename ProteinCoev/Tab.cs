@@ -27,22 +27,8 @@ namespace ProteinCoev
             Controls.Add(alignmentArea);
             DrawAlignments();
             Text = label;
-            alignmentArea.MouseDown += alignmentArea_MouseDown;
+            alignmentArea.SelectionChanged += BoxSelectionChanged;
         }
-
-        void alignmentArea_MouseDown(object sender, MouseEventArgs e)
-        {
-            var richTextBox = sender as RichTextBox;
-            var column = (richTextBox.GetCharIndexFromPosition(e.Location) % (Proteins.First().Sequence.Length + 1));
-            try
-            {
-                var identity = identities[column];
-                if (richTextBox != null)
-                    positionLabel.Text = String.Format("Column: {0},\n identity: {1}", column, identity);
-            }
-            catch (NullReferenceException) { }
-        }
-
         public override sealed string Text
         {
             get { return base.Text; }
@@ -94,12 +80,29 @@ namespace ProteinCoev
             {
                 var sb = new StringBuilder();
 
-                for (int j = 0; j < seqLength; j++)
+                for (var j = 0; j < seqLength; j++)
                 {
                     sb.Append(arr[i, j]);
                 }
                 alignmentArea.AppendText(sb + "\n");
             }
+        }
+        private void BoxSelectionChanged(Object sender, EventArgs e)
+        {
+            var richTextBox = sender as RichTextBox;
+            var caret = richTextBox.SelectionStart;
+            var column = caret % (seqLength + 1);
+            try
+            {
+                var identity = identities[column];
+                if (richTextBox != null)
+                    positionLabel.Text = String.Format("Column: {0},\n identity: {1}", column, identity);
+            }
+            catch (NullReferenceException)
+            {
+                positionLabel.Text = String.Format("Column: {0}", column);
+            }
+
         }
     }
 }

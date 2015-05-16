@@ -57,7 +57,7 @@ namespace ProteinCoev
                 }
                 else
                 {
-                    //proteins.Add(new Protein{Organism = "All",FileName = rawFileName});
+                    proteins.Add(new Protein{Organism = "All",FileName = rawFileName});
                     proteins.Last().Sequence = String.Concat(proteins.Last().Sequence, line.Trim());
                 }
             }
@@ -118,7 +118,8 @@ namespace ProteinCoev
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var proteins = tab.Proteins;
             var mi = new MI(proteins, tab.BaseColumns);
-            var mis = mi.GetMIs();
+            var form = new Form2(mi.GetZscores());
+            form.Show();
         }
 
         private void Button2Click(object sender, EventArgs e)
@@ -126,7 +127,7 @@ namespace ProteinCoev
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var proteins = tab.Proteins;
             var mi = new MI(proteins, tab.BaseColumns);
-            var mis = mi.GetMIs();
+            var mis = mi.GetZscores();
             var MIp = new MIp(mis);
             MIp.GetMIps();
         }

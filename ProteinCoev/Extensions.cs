@@ -96,5 +96,15 @@ namespace ProteinCoev
             }
             return arr;
         }
+
+        public static double GetTreshold(this double[,] arr, int percent)
+        {
+            var len = arr.GetLength(0);
+            var arr2 = new double[len * len];
+            Buffer.BlockCopy(arr, 0, arr2, 0, len * len * sizeof(double));
+            Array.Sort(arr2);
+            var treshold = len * len * percent / 100;
+            return arr2[treshold];
+        }
     }
 }
