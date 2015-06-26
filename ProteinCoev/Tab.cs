@@ -25,7 +25,8 @@ namespace ProteinCoev
             this.positionLabel = positionLabel;
             alignmentArea = new RichTextBox { Font = new Font("Courier New", 12), WordWrap = false, Dock = DockStyle.Fill };
             Controls.Add(alignmentArea);
-            DrawAlignments();
+            if (proteins.Count < 2000)
+                DrawAlignments();
             Text = label;
             alignmentArea.SelectionChanged += BoxSelectionChanged;
         }

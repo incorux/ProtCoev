@@ -12,8 +12,30 @@ namespace ProteinCoev
         }
         public static int ToInt(this char c)
         {
-            if (c == '-') return 20;
-            return (int)c.ToAcid();
+            switch (c)
+            {
+                case 'A': return 0;
+                case 'R': return 1;
+                case 'N': return 2;
+                case 'D': return 3;
+                case 'C': return 4;
+                case 'Q': return 5;
+                case 'E': return 6;
+                case 'G': return 7;
+                case 'H': return 8;
+                case 'I': return 9;
+                case 'L': return 10;
+                case 'K': return 11;
+                case 'M': return 12;
+                case 'F': return 13;
+                case 'P': return 14;
+                case 'S': return 15;
+                case 'T': return 16;
+                case 'W': return 17;
+                case 'Y': return 18;
+                case 'V': return 19;
+                default:  return 20;
+            }
         }
         public static char ToAcid(this int integer)
         {

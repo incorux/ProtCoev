@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace ProteinCoev
             var fileReader = new StreamReader(fileName);
             var i = 0;
             string line;
-            while ((line = fileReader.ReadLine()) != null && i++ < 500)
+            while ((line = fileReader.ReadLine()) != null)
             {
                 if (line[0] == '>')
                 {
@@ -118,8 +119,12 @@ namespace ProteinCoev
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var proteins = tab.Proteins;
             var mi = new MI(proteins, tab.BaseColumns);
-            var form = new Form2(mi.GetZscores());
-            form.Show();
+            var sw = new Stopwatch();
+            sw.Start();
+            var zscores = mi.GetZscores();
+            //var form = new Form2(zscores);
+            //form.Show();
+            sw.Stop();
         }
 
         private void Button2Click(object sender, EventArgs e)
@@ -127,15 +132,21 @@ namespace ProteinCoev
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var proteins = tab.Proteins;
             var mi = new MI(proteins, tab.BaseColumns);
+            var sw = new Stopwatch();
+            sw.Start();
             var mis = mi.GetZscores();
             var MIp = new MIp(mis);
             MIp.GetMIps();
+            sw.Stop();
         }
 
         private void Button3Click(object sender, EventArgs e)
         {
             var di = new DI(proteins);
+            var sw = new Stopwatch();
+            sw.Start();
             di.getDI();
+            sw.Stop();
         }
 
         private void Button4Click(object sender, EventArgs e)
@@ -155,7 +166,10 @@ namespace ProteinCoev
         {
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var arr = proteins.ToCharArrayRestricted(tab.BaseColumns);
+            var sw = new Stopwatch();
+            sw.Start();
             var psicov = new Psicov(arr);
+            sw.Stop();
         }
     }
 }
