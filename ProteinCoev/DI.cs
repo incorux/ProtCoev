@@ -11,20 +11,16 @@ namespace ProteinCoev
         private int length;
         private int _count;
         private char[,] alg;
+        private List<int> columns;
         [ThreadStatic]
         private static int column2, j, m, l;
 
-        public DI(List<Protein> proteins)
+        public DI(List<Protein> proteins, List<int> columns = null)
         {
-            length = proteins.First().Sequence.Length;
-            _count = proteins.Count;
             alg = proteins.ToCharArray();
-        }
-        public DI(char[,] alg)
-        {
-            length = alg.GetLength(1);
+            length = columns == null ? alg.GetLength(1) : columns.Count;
+            this.columns = columns;
             _count = alg.GetLength(0);
-            this.alg = alg;
         }
         public double[,] getDI()
         {
@@ -38,35 +34,51 @@ namespace ProteinCoev
             MIs = new double[length, length];
             var frequencies = new double[length, q];
             /////////// LOGIC ////////////////////////
-            /////////////////////////////// SINGULAR //////////////////////////////////
-            Parallel.For(0, length, column1 =>
+            /////////////////////////////// SINGULAR EQ [2] & [1] //////////////////////////////////
+            Parallel.For(0, length, i =>
             {
+                // Take a row from base if supplied
+                var index1 = columns != null ? columns[i] : i;
+
                 for (j = 0; j < _count; j++)
                 {
-                    var c = alg[j, column1];
-                    frequencies[column1, c.ToInt()] += 1 / identityTable[j];
+                    var c = alg[j, index1];
+                    frequencies[i, c.ToInt()] += 1 / identityTable[j];
                 }
                 for (j = 0; j < q; j++)
                 {
+                    if (frequencies[i, j] == 0) continue;
                     var addItem = mEff / q;
                     var divisor = 2 * mEff;
-                    frequencies[column1, j] += addItem;
-                    frequencies[column1, j] /= divisor;
+                    frequencies[i, j] += addItem;
+                    frequencies[i, j] /= divisor;
                 }
             });
             ////////////////////////////// PAIRS //////////////////////////////////////
             Parallel.For(0, length, column1 =>
             {
-
                 // Second column
                 for (column2 = column1 + 1; column2 < length; column2++)
                 {
+                    // Take from base if supplied
+                    int index1, index2;
+                    if (columns != null)
+                    {
+                        index1 = columns[column1];
+                        index2 = columns[column2];
+                    }
+                    else
+                    {
+                        index1 = column1;
+                        index2 = column2;
+                    }
+
                     var frequenciesPairs = new double[q, q];
                     // For each row
                     for (var j = 0; j < _count; j++)
                     {
-                        var c1 = alg[j, column1];
-                        var c2 = alg[j, column2];
+                        var c1 = alg[j, index1];
+                        var c2 = alg[j, index2];
                         var d1 = c1.ToInt();
                         var d2 = c2.ToInt();
                         frequenciesPairs[d1, d2] += 1 / identityTable[j];
@@ -76,17 +88,20 @@ namespace ProteinCoev
                     {
                         for (l = 0; l < q; l++)
                         {
+                            if (frequenciesPairs[j, l] == 0) continue;
                             var addItem = mEff / (q * q);
                             var divisor = (2 * mEff);
                             frequenciesPairs[j, l] += addItem;
                             frequenciesPairs[j, l] /= divisor;
                         }
                     }
-                    //
+                    // EQ [3]
+                    // For every aminoacids combination
                     for (m = 0; m < q; m++)
                     {
                         for (l = 0; l < q; l++)
                         {
+                            if (frequenciesPairs[m, l] == 0) continue;
                             var number = frequenciesPairs[m, l] /
                                             (frequencies[column1, m] * frequencies[column2, l]);
                             var log = Math.Log(number, Math.E);

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ProteinCoev
 {
@@ -18,7 +16,6 @@ namespace ProteinCoev
         public Psicov(char[,] Aln)
         {
             aln = Aln;
-            GetPsicov(aln);
         }
 
         private const double EPS = 1.1e-15;
@@ -210,7 +207,7 @@ namespace ProteinCoev
             return status;
         }
 
-        private int GetPsicov(char[,] aln)
+        public double[,] GetPsicov()
         {
             ///////////////////    Variables  ///////////////////////////////
             bool filtflg = false,
@@ -219,7 +216,7 @@ namespace ProteinCoev
                 initflg = false,
                 apcflg = true,
                 rawscflg = true,
-                overrideflg = false;
+                overrideflg = true;
             int nseqs = aln.GetLength(0);
             int seqlen = aln.GetLength(1);
             int s, ncon, opt, ndim, maxit = 10000, npair, nnzero, niter, jerr, pseudoc = 1, minseqsep = 5;
@@ -297,8 +294,10 @@ namespace ProteinCoev
             //    printf("wtsum = %f\n", wtsum);
 
             if (wtsum < seqlen && !overrideflg)
-                MessageBox.Show("Sorry - not enough sequences or sequence diversity to proceed!");            // wtsum, seqlen
-
+            {
+                //MessageBox.Show("Sorry - not enough sequences or sequence diversity to proceed!");            // wtsum, seqlen
+                return null;
+            }
 
             pa = new double[seqlen, 21];
             /* Calculate singlet frequencies with pseudocount */
@@ -525,7 +524,7 @@ namespace ProteinCoev
                 ccount[i] = 0;
 
             Array.Sort(sclist, new scComparer());
-
+            var Zscores = new double[seqlen, seqlen];
             /* Print output in CASP RR format with optional PPV estimated from final Z-score */
             if (!rawscflg)
                 for (i = 0; i < ncon; i++)
@@ -533,14 +532,14 @@ namespace ProteinCoev
             else
                 for (i = 0; i < ncon; i++)
                 {
-                    zscore = (sclist[i].sc - mean) / sd;
+                    Zscores[sclist[i].i, sclist[j].j] = zscore = (sclist[i].sc - mean) / sd;
                     ppv = 0.904 / (1.0 + 16.61 * Math.Exp(-0.8105 * zscore));
                     if (!(ppv >= 0.5) && (ccount[sclist[i].i] != 0 && ccount[sclist[i].j] != 0) && filtflg) continue;
                     Console.WriteLine("{0} {1} 0 8 {2}\n", sclist[i].i + 1, sclist[i].j + 1, ppv);
                     ccount[sclist[i].i]++;
                     ccount[sclist[i].j]++;
                 }
-            return 0;
+            return Zscores;
         }
 
         private class scComparer : IComparer<sc_entry>

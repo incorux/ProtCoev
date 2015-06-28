@@ -23,7 +23,7 @@ namespace ProteinCoev
 
         void WorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _tab.HighlightBase(Color.Gray);
+            //_tab.HighlightBase(Color.Gray);
             _pb.Value = 100;
         }
 
@@ -56,8 +56,9 @@ namespace ProteinCoev
                     try
                     {
                         var c = proteins[j].Sequence[i];
-                        if (c == '-') spaces++;
-                        else clusters.AddAcidCount(c.ToAcid());
+                        var acid = c.ToAcid();
+                        if (acid == null) spaces++;
+                        else clusters.AddAcidCount(acid.Value);
                     }
                     catch (KeyNotFoundException) { }
                 }

@@ -95,6 +95,7 @@ namespace ProteinCoev
             var column = caret % (seqLength + 1);
             try
             {
+                if (column >= identities.Count) return;
                 var identity = identities[column];
                 if (richTextBox != null)
                     positionLabel.Text = String.Format("Column: {0},\n identity: {1}", column, identity);

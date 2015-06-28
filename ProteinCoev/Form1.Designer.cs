@@ -32,6 +32,8 @@
             this.numericIdentity = new System.Windows.Forms.NumericUpDown();
             this.LoadFileButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.CoevBtn = new System.Windows.Forms.Button();
+            this.RunAllBtn = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
@@ -55,8 +57,6 @@
             this.numericCreditGain = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonApply = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboOrganisms = new System.Windows.Forms.ComboBox();
             this.ColorButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.AlignmentTabs = new System.Windows.Forms.TabControl();
@@ -116,6 +116,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.CoevBtn);
+            this.panel1.Controls.Add(this.RunAllBtn);
             this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.button3);
@@ -123,20 +125,38 @@
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.labelPosition);
             this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.comboOrganisms);
             this.panel1.Controls.Add(this.ColorButton);
             this.panel1.Controls.Add(this.progressBar);
             this.panel1.Controls.Add(this.LoadFileButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(106, 750);
+            this.panel1.Size = new System.Drawing.Size(106, 797);
             this.panel1.TabIndex = 6;
+            // 
+            // CoevBtn
+            // 
+            this.CoevBtn.Location = new System.Drawing.Point(3, 505);
+            this.CoevBtn.Name = "CoevBtn";
+            this.CoevBtn.Size = new System.Drawing.Size(98, 52);
+            this.CoevBtn.TabIndex = 21;
+            this.CoevBtn.Text = "Check coevolution";
+            this.CoevBtn.UseVisualStyleBackColor = true;
+            this.CoevBtn.Click += new System.EventHandler(this.CoevBtnClick);
+            // 
+            // RunAllBtn
+            // 
+            this.RunAllBtn.Location = new System.Drawing.Point(3, 469);
+            this.RunAllBtn.Name = "RunAllBtn";
+            this.RunAllBtn.Size = new System.Drawing.Size(98, 30);
+            this.RunAllBtn.TabIndex = 7;
+            this.RunAllBtn.Text = "Run all";
+            this.RunAllBtn.UseVisualStyleBackColor = true;
+            this.RunAllBtn.Click += new System.EventHandler(this.RunAllClick);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(6, 477);
+            this.button5.Location = new System.Drawing.Point(2, 436);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(98, 27);
             this.button5.TabIndex = 20;
@@ -153,7 +173,7 @@
             this.groupBox2.Controls.Add(this.numericColumn2);
             this.groupBox2.Controls.Add(this.numericColumn1);
             this.groupBox2.Controls.Add(this.checkCompareColumn);
-            this.groupBox2.Location = new System.Drawing.Point(6, 516);
+            this.groupBox2.Location = new System.Drawing.Point(6, 563);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(97, 158);
             this.groupBox2.TabIndex = 19;
@@ -220,7 +240,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(5, 444);
+            this.button3.Location = new System.Drawing.Point(3, 403);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(98, 27);
             this.button3.TabIndex = 18;
@@ -230,7 +250,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(5, 411);
+            this.button2.Location = new System.Drawing.Point(3, 370);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(98, 27);
             this.button2.TabIndex = 17;
@@ -240,7 +260,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(5, 378);
+            this.button1.Location = new System.Drawing.Point(3, 337);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 27);
             this.button1.TabIndex = 16;
@@ -252,7 +272,7 @@
             // 
             this.labelPosition.AutoSize = true;
             this.labelPosition.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.labelPosition.Location = new System.Drawing.Point(0, 714);
+            this.labelPosition.Location = new System.Drawing.Point(0, 761);
             this.labelPosition.Name = "labelPosition";
             this.labelPosition.Size = new System.Drawing.Size(44, 13);
             this.labelPosition.TabIndex = 15;
@@ -271,7 +291,7 @@
             this.groupBox1.Controls.Add(this.numericIdentity);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.buttonApply);
-            this.groupBox1.Location = new System.Drawing.Point(5, 82);
+            this.groupBox1.Location = new System.Drawing.Point(5, 41);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(95, 290);
             this.groupBox1.TabIndex = 14;
@@ -395,27 +415,9 @@
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.ButtonApplyClick);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 36);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 13);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "Organisms";
-            // 
-            // comboOrganisms
-            // 
-            this.comboOrganisms.FormattingEnabled = true;
-            this.comboOrganisms.Location = new System.Drawing.Point(6, 55);
-            this.comboOrganisms.Name = "comboOrganisms";
-            this.comboOrganisms.Size = new System.Drawing.Size(97, 21);
-            this.comboOrganisms.TabIndex = 11;
-            this.comboOrganisms.SelectedIndexChanged += new System.EventHandler(this.ComboOrganismsSelectedIndexChanged);
-            // 
             // ColorButton
             // 
-            this.ColorButton.Location = new System.Drawing.Point(3, 680);
+            this.ColorButton.Location = new System.Drawing.Point(3, 727);
             this.ColorButton.Name = "ColorButton";
             this.ColorButton.Size = new System.Drawing.Size(101, 31);
             this.ColorButton.TabIndex = 8;
@@ -426,7 +428,7 @@
             // progressBar
             // 
             this.progressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBar.Location = new System.Drawing.Point(0, 727);
+            this.progressBar.Location = new System.Drawing.Point(0, 774);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(106, 23);
             this.progressBar.TabIndex = 7;
@@ -439,7 +441,7 @@
             this.AlignmentTabs.Location = new System.Drawing.Point(106, 0);
             this.AlignmentTabs.Name = "AlignmentTabs";
             this.AlignmentTabs.SelectedIndex = 0;
-            this.AlignmentTabs.Size = new System.Drawing.Size(1090, 750);
+            this.AlignmentTabs.Size = new System.Drawing.Size(1090, 797);
             this.AlignmentTabs.TabIndex = 7;
             // 
             // tabPage1
@@ -448,7 +450,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1082, 724);
+            this.tabPage1.Size = new System.Drawing.Size(1082, 771);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage5";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -458,7 +460,7 @@
             this.alignmentArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.alignmentArea.Location = new System.Drawing.Point(3, 3);
             this.alignmentArea.Name = "alignmentArea";
-            this.alignmentArea.Size = new System.Drawing.Size(1076, 718);
+            this.alignmentArea.Size = new System.Drawing.Size(1076, 765);
             this.alignmentArea.TabIndex = 6;
             this.alignmentArea.Text = "";
             this.alignmentArea.WordWrap = false;
@@ -468,7 +470,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1082, 724);
+            this.tabPage2.Size = new System.Drawing.Size(1082, 771);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -477,7 +479,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1196, 750);
+            this.ClientSize = new System.Drawing.Size(1196, 797);
             this.Controls.Add(this.AlignmentTabs);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -511,8 +513,6 @@
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button ColorButton;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboOrganisms;
         private System.Windows.Forms.TabControl AlignmentTabs;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.RichTextBox alignmentArea;
@@ -539,6 +539,8 @@
         private System.Windows.Forms.NumericUpDown numericRow1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button RunAllBtn;
+        private System.Windows.Forms.Button CoevBtn;
 
 
     }

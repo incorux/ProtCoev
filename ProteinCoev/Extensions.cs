@@ -34,16 +34,18 @@ namespace ProteinCoev
                 case 'W': return 17;
                 case 'Y': return 18;
                 case 'V': return 19;
-                default:  return 20;
+                default: return 20;
             }
         }
         public static char ToAcid(this int integer)
         {
             return Enum.GetName(typeof(Aminoacids), (Aminoacids)integer)[0];
         }
-        public static Aminoacids ToAcid(this char c)
+        public static Aminoacids? ToAcid(this char c)
         {
-            return (Aminoacids)Enum.Parse(typeof(Aminoacids), c.ToString());
+            if (Enum.GetNames(typeof(Aminoacids)).Contains(c.ToString()))
+                return (Aminoacids)Enum.Parse(typeof(Aminoacids), c.ToString());
+            return null;
         }
         public static void AddAcidCount(this List<Cluster> clusters, Aminoacids acid)
         {
