@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ProteinCoev
 {
@@ -100,7 +101,8 @@ namespace ProteinCoev
                 var protein = proteins[index];
                 for (var i = 0; i < len; i++)
                 {
-                    arr[index, i] = protein.Sequence[i];
+                    var str = protein.Sequence.Trim();
+                    arr[index, i] = str[i];
                 }
             }
             return arr;
@@ -112,10 +114,10 @@ namespace ProteinCoev
             var fullArray = proteins.ToCharArray();
             for (var j = 0; j < proteins.Count; j++)
             {
-                var i = 0;
                 for (int k = 0; k < len; k++)
                 {
-                    arr[j, i++] = fullArray[j, k];
+                    var index = columns == null ? k : columns[k];
+                    arr[j, k] = fullArray[j, index];
                 }
             }
             return arr;
@@ -129,6 +131,20 @@ namespace ProteinCoev
             Array.Sort(arr2);
             var treshold = len * len * percent / 100;
             return arr2[treshold];
+        }
+
+        public static IEnumerable<T> GetRow<T>(this T[,] array, int index)
+        {
+            for (var i = 0; i < array.GetLength(1); i++)
+            {
+                yield return array[index, i];
+            }
+        }
+
+        public static IEnumerable<int> GetAllIndexes(this string source, string matchString)
+        {
+            matchString = Regex.Escape(matchString);
+            return from Match match in Regex.Matches(source, matchString) select match.Index;
         }
     }
 }

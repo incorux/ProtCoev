@@ -35,19 +35,14 @@
             this.CoevBtn = new System.Windows.Forms.Button();
             this.RunAllBtn = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.numericRow2 = new System.Windows.Forms.NumericUpDown();
-            this.numericRow1 = new System.Windows.Forms.NumericUpDown();
-            this.checkCompareRow = new System.Windows.Forms.CheckBox();
-            this.numericColumn2 = new System.Windows.Forms.NumericUpDown();
-            this.numericColumn1 = new System.Windows.Forms.NumericUpDown();
-            this.checkCompareColumn = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.labelPosition = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.SearchForStringButton = new System.Windows.Forms.Button();
+            this.SearchSequenceTextBox = new System.Windows.Forms.TextBox();
             this.checkTailing = new System.Windows.Forms.CheckBox();
             this.checkBase = new System.Windows.Forms.CheckBox();
             this.numericStartingCredit = new System.Windows.Forms.NumericUpDown();
@@ -63,13 +58,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.alignmentArea = new System.Windows.Forms.RichTextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.CreateTreeButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericIdentity)).BeginInit();
             this.panel1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericRow2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericRow1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericColumn2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericColumn1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericStartingCredit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericCreditLoss)).BeginInit();
@@ -81,7 +72,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 19);
+            this.label1.Location = new System.Drawing.Point(3, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(81, 13);
             this.label1.TabIndex = 5;
@@ -96,7 +87,7 @@
             0});
             this.numericIdentity.Location = new System.Drawing.Point(6, 39);
             this.numericIdentity.Name = "numericIdentity";
-            this.numericIdentity.Size = new System.Drawing.Size(88, 20);
+            this.numericIdentity.Size = new System.Drawing.Size(83, 20);
             this.numericIdentity.TabIndex = 4;
             this.numericIdentity.Value = new decimal(new int[] {
             80,
@@ -116,10 +107,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.CreateTreeButton);
             this.panel1.Controls.Add(this.CoevBtn);
             this.panel1.Controls.Add(this.RunAllBtn);
             this.panel1.Controls.Add(this.button5);
-            this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
@@ -136,7 +127,7 @@
             // 
             // CoevBtn
             // 
-            this.CoevBtn.Location = new System.Drawing.Point(3, 505);
+            this.CoevBtn.Location = new System.Drawing.Point(5, 656);
             this.CoevBtn.Name = "CoevBtn";
             this.CoevBtn.Size = new System.Drawing.Size(98, 52);
             this.CoevBtn.TabIndex = 21;
@@ -146,9 +137,9 @@
             // 
             // RunAllBtn
             // 
-            this.RunAllBtn.Location = new System.Drawing.Point(3, 469);
+            this.RunAllBtn.Location = new System.Drawing.Point(5, 584);
             this.RunAllBtn.Name = "RunAllBtn";
-            this.RunAllBtn.Size = new System.Drawing.Size(98, 30);
+            this.RunAllBtn.Size = new System.Drawing.Size(98, 27);
             this.RunAllBtn.TabIndex = 7;
             this.RunAllBtn.Text = "Run all";
             this.RunAllBtn.UseVisualStyleBackColor = true;
@@ -156,7 +147,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(2, 436);
+            this.button5.Location = new System.Drawing.Point(5, 551);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(98, 27);
             this.button5.TabIndex = 20;
@@ -164,83 +155,9 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.Button5Click);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.numericRow2);
-            this.groupBox2.Controls.Add(this.numericRow1);
-            this.groupBox2.Controls.Add(this.checkCompareRow);
-            this.groupBox2.Controls.Add(this.numericColumn2);
-            this.groupBox2.Controls.Add(this.numericColumn1);
-            this.groupBox2.Controls.Add(this.checkCompareColumn);
-            this.groupBox2.Location = new System.Drawing.Point(6, 563);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(97, 158);
-            this.groupBox2.TabIndex = 19;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Comparator";
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(0, 118);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(93, 34);
-            this.button4.TabIndex = 15;
-            this.button4.Text = "Apply";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.Button4Click);
-            // 
-            // numericRow2
-            // 
-            this.numericRow2.Location = new System.Drawing.Point(54, 92);
-            this.numericRow2.Name = "numericRow2";
-            this.numericRow2.Size = new System.Drawing.Size(40, 20);
-            this.numericRow2.TabIndex = 5;
-            // 
-            // numericRow1
-            // 
-            this.numericRow1.Location = new System.Drawing.Point(2, 92);
-            this.numericRow1.Name = "numericRow1";
-            this.numericRow1.Size = new System.Drawing.Size(39, 20);
-            this.numericRow1.TabIndex = 4;
-            // 
-            // checkCompareRow
-            // 
-            this.checkCompareRow.AutoSize = true;
-            this.checkCompareRow.Location = new System.Drawing.Point(4, 69);
-            this.checkCompareRow.Name = "checkCompareRow";
-            this.checkCompareRow.Size = new System.Drawing.Size(53, 17);
-            this.checkCompareRow.TabIndex = 3;
-            this.checkCompareRow.Text = "Rows";
-            this.checkCompareRow.UseVisualStyleBackColor = true;
-            // 
-            // numericColumn2
-            // 
-            this.numericColumn2.Location = new System.Drawing.Point(57, 42);
-            this.numericColumn2.Name = "numericColumn2";
-            this.numericColumn2.Size = new System.Drawing.Size(40, 20);
-            this.numericColumn2.TabIndex = 2;
-            // 
-            // numericColumn1
-            // 
-            this.numericColumn1.Location = new System.Drawing.Point(5, 42);
-            this.numericColumn1.Name = "numericColumn1";
-            this.numericColumn1.Size = new System.Drawing.Size(39, 20);
-            this.numericColumn1.TabIndex = 1;
-            // 
-            // checkCompareColumn
-            // 
-            this.checkCompareColumn.AutoSize = true;
-            this.checkCompareColumn.Location = new System.Drawing.Point(6, 19);
-            this.checkCompareColumn.Name = "checkCompareColumn";
-            this.checkCompareColumn.Size = new System.Drawing.Size(66, 17);
-            this.checkCompareColumn.TabIndex = 0;
-            this.checkCompareColumn.Text = "Columns";
-            this.checkCompareColumn.UseVisualStyleBackColor = true;
-            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(3, 403);
+            this.button3.Location = new System.Drawing.Point(5, 518);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(98, 27);
             this.button3.TabIndex = 18;
@@ -250,7 +167,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(3, 370);
+            this.button2.Location = new System.Drawing.Point(5, 485);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(98, 27);
             this.button2.TabIndex = 17;
@@ -260,7 +177,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 337);
+            this.button1.Location = new System.Drawing.Point(5, 452);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 27);
             this.button1.TabIndex = 16;
@@ -280,6 +197,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.SearchForStringButton);
+            this.groupBox1.Controls.Add(this.SearchSequenceTextBox);
             this.groupBox1.Controls.Add(this.checkTailing);
             this.groupBox1.Controls.Add(this.checkBase);
             this.groupBox1.Controls.Add(this.numericStartingCredit);
@@ -293,10 +213,36 @@
             this.groupBox1.Controls.Add(this.buttonApply);
             this.groupBox1.Location = new System.Drawing.Point(5, 41);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(95, 290);
+            this.groupBox1.Size = new System.Drawing.Size(95, 406);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Base";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 329);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(80, 13);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "Find  sequence";
+            // 
+            // SearchForStringButton
+            // 
+            this.SearchForStringButton.Location = new System.Drawing.Point(4, 374);
+            this.SearchForStringButton.Name = "SearchForStringButton";
+            this.SearchForStringButton.Size = new System.Drawing.Size(87, 26);
+            this.SearchForStringButton.TabIndex = 16;
+            this.SearchForStringButton.Text = "Search";
+            this.SearchForStringButton.UseVisualStyleBackColor = true;
+            this.SearchForStringButton.Click += new System.EventHandler(this.SearchForStringButtonClick);
+            // 
+            // SearchSequenceTextBox
+            // 
+            this.SearchSequenceTextBox.Location = new System.Drawing.Point(4, 348);
+            this.SearchSequenceTextBox.Name = "SearchSequenceTextBox";
+            this.SearchSequenceTextBox.Size = new System.Drawing.Size(85, 20);
+            this.SearchSequenceTextBox.TabIndex = 15;
             // 
             // checkTailing
             // 
@@ -336,7 +282,7 @@
             0,
             0});
             this.numericStartingCredit.Name = "numericStartingCredit";
-            this.numericStartingCredit.Size = new System.Drawing.Size(88, 20);
+            this.numericStartingCredit.Size = new System.Drawing.Size(85, 20);
             this.numericStartingCredit.TabIndex = 11;
             this.numericStartingCredit.Value = new decimal(new int[] {
             100,
@@ -362,7 +308,7 @@
             0});
             this.numericCreditLoss.Location = new System.Drawing.Point(5, 176);
             this.numericCreditLoss.Name = "numericCreditLoss";
-            this.numericCreditLoss.Size = new System.Drawing.Size(88, 20);
+            this.numericCreditLoss.Size = new System.Drawing.Size(84, 20);
             this.numericCreditLoss.TabIndex = 9;
             this.numericCreditLoss.Value = new decimal(new int[] {
             60,
@@ -388,7 +334,7 @@
             0});
             this.numericCreditGain.Location = new System.Drawing.Point(5, 130);
             this.numericCreditGain.Name = "numericCreditGain";
-            this.numericCreditGain.Size = new System.Drawing.Size(88, 20);
+            this.numericCreditGain.Size = new System.Drawing.Size(84, 20);
             this.numericCreditGain.TabIndex = 7;
             this.numericCreditGain.Value = new decimal(new int[] {
             40,
@@ -409,7 +355,7 @@
             // 
             this.buttonApply.Location = new System.Drawing.Point(5, 253);
             this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(83, 31);
+            this.buttonApply.Size = new System.Drawing.Size(72, 31);
             this.buttonApply.TabIndex = 6;
             this.buttonApply.Text = "Find";
             this.buttonApply.UseVisualStyleBackColor = true;
@@ -417,7 +363,7 @@
             // 
             // ColorButton
             // 
-            this.ColorButton.Location = new System.Drawing.Point(3, 727);
+            this.ColorButton.Location = new System.Drawing.Point(0, 714);
             this.ColorButton.Name = "ColorButton";
             this.ColorButton.Size = new System.Drawing.Size(101, 31);
             this.ColorButton.TabIndex = 8;
@@ -475,6 +421,16 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // CreateTreeButton
+            // 
+            this.CreateTreeButton.Location = new System.Drawing.Point(5, 620);
+            this.CreateTreeButton.Name = "CreateTreeButton";
+            this.CreateTreeButton.Size = new System.Drawing.Size(98, 27);
+            this.CreateTreeButton.TabIndex = 22;
+            this.CreateTreeButton.Text = "Draw tree";
+            this.CreateTreeButton.UseVisualStyleBackColor = true;
+            this.CreateTreeButton.Click += new System.EventHandler(this.CreateTreeButtonClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -487,12 +443,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericIdentity)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericRow2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericRow1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericColumn2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericColumn1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericStartingCredit)).EndInit();
@@ -530,17 +480,13 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox checkCompareColumn;
-        private System.Windows.Forms.NumericUpDown numericColumn2;
-        private System.Windows.Forms.NumericUpDown numericColumn1;
-        private System.Windows.Forms.CheckBox checkCompareRow;
-        private System.Windows.Forms.NumericUpDown numericRow2;
-        private System.Windows.Forms.NumericUpDown numericRow1;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button RunAllBtn;
         private System.Windows.Forms.Button CoevBtn;
+        private System.Windows.Forms.Button SearchForStringButton;
+        private System.Windows.Forms.TextBox SearchSequenceTextBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button CreateTreeButton;
 
 
     }

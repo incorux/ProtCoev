@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="MI.cs" />
     <Compile Include="MIp.cs" />
+    <Compile Include="Phylogeny.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protein.cs" />
@@ -102,6 +103,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libs\drawtree.dll" />
+    <Content Include="Libs\DrawTree.jar" />
+    <Content Include="Libs\neighbor.exe" />
+    <Content Include="Libs\protdist.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

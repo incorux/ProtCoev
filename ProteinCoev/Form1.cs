@@ -50,7 +50,7 @@ namespace ProteinCoev
                 {
                     var index = line.IndexOf("_", StringComparison.Ordinal);
                     //var organism = line.Substring(index + 1, line.IndexOf("/", StringComparison.Ordinal) - index - 1);
-                    var organism = line;
+                    var organism = line.Substring(1);
                     proteins.Add(new Protein
                                  {
                                      Organism = organism,
@@ -67,6 +67,7 @@ namespace ProteinCoev
             }
             var newTab = new Tab(rawFileName, proteins, labelPosition);
             AlignmentTabs.Controls.Add(newTab);
+            AlignmentTabs.SelectedIndex = AlignmentTabs.TabCount - 1;
             //LoadCombo();
         }
 
@@ -153,19 +154,6 @@ namespace ProteinCoev
             WriteToFile(zscores, String.Concat(tab.Label + "_", "DI"));
         }
 
-        private void Button4Click(object sender, EventArgs e)
-        {
-            var tab = ((Tab)AlignmentTabs.SelectedTab);
-            if (checkCompareColumn.Checked)
-            {
-                tab.Compare(_highlightColor, -1, -1, (int)numericColumn1.Value, (int)numericColumn2.Value);
-            }
-            if (checkCompareRow.Checked)
-            {
-                tab.Compare(_highlightColor, (int)numericRow1.Value, (int)numericRow2.Value, -1, -1);
-            }
-        }
-
         private void Button5Click(object sender, EventArgs e)
         {
             var tab = ((Tab)AlignmentTabs.SelectedTab);
@@ -227,6 +215,28 @@ namespace ProteinCoev
 
             var form2 = new Form2(arr1, arr2);
             form2.ShowDialog();
+        }
+
+        private void SearchForStringButtonClick(object sender, EventArgs e)
+        {
+            var searchStr = SearchSequenceTextBox.Text.Trim();
+            var tab = (Tab)AlignmentTabs.SelectedTab;
+            var sequenceRange = proteins.ToCharArrayRestricted(tab.BaseColumns);
+
+            var indices = new List<Point>();
+
+            for (var i = 0; i < sequenceRange.GetLength(0); i++)
+            {
+                var str = new string(sequenceRange.GetRow(i).ToArray());
+                indices.AddRange(str.GetAllIndexes(searchStr).Select(index => new Point(i, index)));
+            }
+
+            tab.HighlightRanges(indices, searchStr.Length);
+        }
+
+        private void CreateTreeButtonClick(object sender, EventArgs e)
+        {
+            Phylogeny.ExportToFile(proteins);
         }
     }
 }
