@@ -123,14 +123,14 @@ namespace ProteinCoev
             return arr;
         }
 
-        public static double GetTreshold(this double[,] arr, int percent)
+        public static double GetTreshold(this double[,] arr, int amount)
         {
             var len = arr.GetLength(0);
             var arr2 = new double[len * len];
             Buffer.BlockCopy(arr, 0, arr2, 0, len * len * sizeof(double));
             Array.Sort(arr2);
-            var treshold = len * len * percent / 100;
-            return arr2[treshold];
+            var treshold = amount;
+            return arr2[len * len - treshold];
         }
 
         public static IEnumerable<T> GetRow<T>(this T[,] array, int index)

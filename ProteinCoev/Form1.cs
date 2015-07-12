@@ -118,7 +118,7 @@ namespace ProteinCoev
             //tab.DrawAlignments(comboOrganisms.SelectedItem.ToString());
         }
 
-        private void Button1Click(object sender, EventArgs e)
+        private void MIClick(object sender, EventArgs e)
         {
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var proteins = tab.Proteins;
@@ -131,7 +131,7 @@ namespace ProteinCoev
             WriteToFile(zscores, String.Concat(tab.Label + "_", "MI"));
         }
 
-        private void Button2Click(object sender, EventArgs e)
+        private void MIpClick(object sender, EventArgs e)
         {
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var proteins = tab.Proteins;
@@ -144,7 +144,7 @@ namespace ProteinCoev
             WriteToFile(zscores, String.Concat(tab.Label + "_", "MIp"));
         }
 
-        private void Button3Click(object sender, EventArgs e)
+        private void DIClick(object sender, EventArgs e)
         {
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var di = new DI(proteins, tab.BaseColumns);
@@ -154,7 +154,7 @@ namespace ProteinCoev
             WriteToFile(zscores, String.Concat(tab.Label + "_", "DI"));
         }
 
-        private void Button5Click(object sender, EventArgs e)
+        private void PsicovClick(object sender, EventArgs e)
         {
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var arr = proteins.ToCharArrayRestricted(tab.BaseColumns);
@@ -171,24 +171,24 @@ namespace ProteinCoev
                 var proteins = tab.Proteins;
                 var mi = new MI(proteins, tab.BaseColumns);
                 var MIZscores = mi.GetZscores();
-                WriteToFile(MIZscores, String.Concat(tab.Label + "_", "MI"));
+                WriteToFile(MIZscores, String.Concat(tab.Label + "_", "MI"), false);
 
                 var mis = MIZscores;
                 var MIp = new MIp(mis);
                 var MIpZscores = MIp.GetMIps();
-                WriteToFile(MIpZscores, String.Concat(tab.Label + "_", "MIp"));
+                WriteToFile(MIpZscores, String.Concat(tab.Label + "_", "MIp"), false);
 
                 var di = new DI(proteins);
                 var diZscores = di.getDI();
-                WriteToFile(diZscores, String.Concat(tab.Label + "_", "DI"));
+                WriteToFile(diZscores, String.Concat(tab.Label + "_", "DI"), false);
 
                 var arr = proteins.ToCharArrayRestricted(tab.BaseColumns);
                 var psicovZscores = new Psicov(arr).GetPsicov();
                 if (psicovZscores == null) continue;
-                WriteToFile(psicovZscores, String.Concat(tab.Label + "_", "Psicov"));
+                WriteToFile(psicovZscores, String.Concat(tab.Label + "_", "Psicov"), false);
             }
         }
-        private void WriteToFile(double[,] arr, string suffix)
+        private void WriteToFile(double[,] arr, string suffix, bool showMessage = true)
         {
             using (var fileStream = new FileStream(suffix, FileMode.Create))
             {
@@ -198,6 +198,8 @@ namespace ProteinCoev
                 bf.Serialize(memoryStream, arr);
                 bw.Write(memoryStream.ToArray());
             }
+            if (showMessage)
+                MessageBox.Show(String.Format("File: {0} was saved", suffix));
         }
 
         private void CoevBtnClick(object sender, EventArgs e)

@@ -46,6 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aminoacids.cs" />
+    <Compile Include="ArrayVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ArrayVisualizer.Designer.cs">
+      <DependentUpon>ArrayVisualizer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Blosum.cs" />
     <Compile Include="DI.cs" />
     <Compile Include="Form2.cs">
@@ -53,6 +59,12 @@
     </Compile>
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GraphOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GraphOptions.Designer.cs">
+      <DependentUpon>GraphOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="Extensions.cs" />
@@ -76,11 +88,17 @@
     <Compile Include="Worker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="ArrayVisualizer.resx">
+      <DependentUpon>ArrayVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GraphOptions.resx">
+      <DependentUpon>GraphOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

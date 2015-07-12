@@ -13,7 +13,7 @@ namespace ProteinCoev
         private char[,] alg;
         private List<int> columns;
         [ThreadStatic]
-        private static int column2, j, m, l;
+        private static int column2, i, j, m, l;
 
         public DI(List<Protein> proteins, List<int> columns = null)
         {
@@ -30,7 +30,8 @@ namespace ProteinCoev
             {
                 identityTable[i] = GetIdenticalSequences(i);
             });
-            var mEff = Math.Round(identityTable.Sum(n => 1 / n), 2);
+            var rawsum = identityTable.Sum(n => 1 / n);
+            var mEff = Math.Round(rawsum, 2);
             MIs = new double[length, length];
             var frequencies = new double[length, q];
             /////////// LOGIC ////////////////////////
@@ -49,6 +50,7 @@ namespace ProteinCoev
                 {
                     if (frequencies[i, j] == 0) continue;
                     var addItem = mEff / q;
+                    // Assume gamma == mEff
                     var divisor = 2 * mEff;
                     frequencies[i, j] += addItem;
                     frequencies[i, j] /= divisor;
@@ -108,6 +110,7 @@ namespace ProteinCoev
                             MIs[column1, column2] += frequenciesPairs[m, l] * log;
                         }
                     }
+                    MIs[column2, column1] = MIs[column1, column2];
                 }
             });
             var Zscores = MIs.CalculateZscore();
@@ -126,7 +129,9 @@ namespace ProteinCoev
             var same = 0.0;
             for (var i = 0; i < length; i++)
             {
-                if (alg[row1, i] == alg[row2, i])
+                var index1 = columns != null ? columns[i] : i;
+
+                if (alg[row1, index1] == alg[row2, index1])
                     same++;
             }
             var fraction = same / length;

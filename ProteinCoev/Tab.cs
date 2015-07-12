@@ -23,7 +23,7 @@ namespace ProteinCoev
         {
             get { return Parent.Parent.Controls.Find("ColorButton", true).First().BackColor; }
         }
-        private int seqLength { get { return Proteins.First().Sequence.Length; } }
+        private int seqLength { get { return Math.Min(Proteins.First().Sequence.Length, 2300); } }
 
         public Tab(string label, List<Protein> proteins, Label positionLabel)
         {
@@ -106,7 +106,7 @@ namespace ProteinCoev
             {
                 var sb = new StringBuilder();
 
-                for (var j = 0; j < (seqLength < 2000 ? seqLength : 2000); j++)
+                for (var j = 0; j < seqLength; j++)
                 {
                     sb.Append(arr[i, j]);
                 }
@@ -121,7 +121,7 @@ namespace ProteinCoev
             var column = caret % (seqLength + 1);
             if (len == 0)
             {
-                positionLabel.Text = column.ToString();
+                positionLabel.Text = String.Format("Column: {0}", column);
                 return;
             }
             HighlightBlock(Color.LightGray, lastStart, lastLen);
@@ -138,6 +138,8 @@ namespace ProteinCoev
 
             richTextBox.SelectionStart = caret;
             richTextBox.SelectionLength = len;
+
+            positionLabel.Text += String.Format("\n{0} columns selected", len);
         }
     }
 }

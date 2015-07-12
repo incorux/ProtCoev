@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProteinCoev
@@ -13,20 +14,20 @@ namespace ProteinCoev
             var length = (int)Math.Sqrt(arr.Length);
             var Zscores = new double[length, length];
             var flattened = new List<double>();
-            var mean = arr.Average();
             for (var i = 0; i < length; i++)
             {
-                for (var j = 0; j < length; j++)
+                for (var j = 0; j < i; j++)
                 {
                     flattened.Add(arr[i, j]);
                 }
             }
+            var mean = flattened.Average();
             var sd = flattened.StandardDeviation();
             Parallel.For(0, length, i =>
             {
                 for (j = 0; j < length; j++)
                 {
-                    Zscores[i, j] = Math.Abs(mean - arr[i, j]) / sd;
+                    Zscores[j, i] = Zscores[i, j] = Math.Abs(mean - arr[i, j]) / sd;
                 }
             });
             return Zscores;

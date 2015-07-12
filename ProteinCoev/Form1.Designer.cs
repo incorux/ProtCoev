@@ -32,6 +32,7 @@
             this.numericIdentity = new System.Windows.Forms.NumericUpDown();
             this.LoadFileButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.CreateTreeButton = new System.Windows.Forms.Button();
             this.CoevBtn = new System.Windows.Forms.Button();
             this.RunAllBtn = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -58,7 +59,6 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.alignmentArea = new System.Windows.Forms.RichTextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.CreateTreeButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericIdentity)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -125,6 +125,16 @@
             this.panel1.Size = new System.Drawing.Size(106, 797);
             this.panel1.TabIndex = 6;
             // 
+            // CreateTreeButton
+            // 
+            this.CreateTreeButton.Location = new System.Drawing.Point(5, 620);
+            this.CreateTreeButton.Name = "CreateTreeButton";
+            this.CreateTreeButton.Size = new System.Drawing.Size(98, 27);
+            this.CreateTreeButton.TabIndex = 22;
+            this.CreateTreeButton.Text = "Draw tree";
+            this.CreateTreeButton.UseVisualStyleBackColor = true;
+            this.CreateTreeButton.Click += new System.EventHandler(this.CreateTreeButtonClick);
+            // 
             // CoevBtn
             // 
             this.CoevBtn.Location = new System.Drawing.Point(5, 656);
@@ -153,7 +163,7 @@
             this.button5.TabIndex = 20;
             this.button5.Text = "Psicov";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.Button5Click);
+            this.button5.Click += new System.EventHandler(this.PsicovClick);
             // 
             // button3
             // 
@@ -163,7 +173,7 @@
             this.button3.TabIndex = 18;
             this.button3.Text = "DI";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.Button3Click);
+            this.button3.Click += new System.EventHandler(this.DIClick);
             // 
             // button2
             // 
@@ -173,7 +183,7 @@
             this.button2.TabIndex = 17;
             this.button2.Text = "MIp";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Button2Click);
+            this.button2.Click += new System.EventHandler(this.MIpClick);
             // 
             // button1
             // 
@@ -183,7 +193,7 @@
             this.button1.TabIndex = 16;
             this.button1.Text = "MI";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1Click);
+            this.button1.Click += new System.EventHandler(this.MIClick);
             // 
             // labelPosition
             // 
@@ -363,9 +373,9 @@
             // 
             // ColorButton
             // 
-            this.ColorButton.Location = new System.Drawing.Point(0, 714);
+            this.ColorButton.Location = new System.Drawing.Point(2, 714);
             this.ColorButton.Name = "ColorButton";
-            this.ColorButton.Size = new System.Drawing.Size(101, 31);
+            this.ColorButton.Size = new System.Drawing.Size(101, 27);
             this.ColorButton.TabIndex = 8;
             this.ColorButton.Text = "Color";
             this.ColorButton.UseVisualStyleBackColor = true;
@@ -420,16 +430,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // CreateTreeButton
-            // 
-            this.CreateTreeButton.Location = new System.Drawing.Point(5, 620);
-            this.CreateTreeButton.Name = "CreateTreeButton";
-            this.CreateTreeButton.Size = new System.Drawing.Size(98, 27);
-            this.CreateTreeButton.TabIndex = 22;
-            this.CreateTreeButton.Text = "Draw tree";
-            this.CreateTreeButton.UseVisualStyleBackColor = true;
-            this.CreateTreeButton.Click += new System.EventHandler(this.CreateTreeButtonClick);
             // 
             // Form1
             // 
