@@ -12,25 +12,18 @@ namespace ProteinCoev
         public static double[,] CalculateZscore(this double[,] arr)
         {
             var length = (int)Math.Sqrt(arr.Length);
-            var Zscores = new double[length, length];
-            var flattened = new List<double>();
-            for (var i = 0; i < length; i++)
-            {
-                for (var j = 0; j < i; j++)
-                {
-                    flattened.Add(arr[i, j]);
-                }
-            }
+            var zscores = new double[length, length];
+            var flattened = arr.Flatten();
             var mean = flattened.Average();
             var sd = flattened.StandardDeviation();
             Parallel.For(0, length, i =>
             {
                 for (j = 0; j < length; j++)
                 {
-                    Zscores[j, i] = Zscores[i, j] = Math.Abs(mean - arr[i, j]) / sd;
+                    zscores[j, i] = zscores[i, j] = Math.Abs(mean - arr[i, j]) / sd;
                 }
             });
-            return Zscores;
+            return zscores;
         }
     }
 }

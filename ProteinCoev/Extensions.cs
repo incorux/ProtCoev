@@ -146,5 +146,19 @@ namespace ProteinCoev
             matchString = Regex.Escape(matchString);
             return from Match match in Regex.Matches(source, matchString) select match.Index;
         }
+
+        public static List<T> Flatten<T>(this T[,] source)
+        {
+            var length = (int)Math.Sqrt(source.Length);
+            var list = new List<T>();
+            for (var i = 0; i < length; i++)
+            {
+                for (var j = 0; j < i; j++)
+                {
+                    list.Add(source[i, j]);
+                }
+            }
+            return list;
+        }
     }
 }

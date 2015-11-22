@@ -73,13 +73,15 @@ namespace ProteinCoev
                     var sumHxy = 0.0;
                     for (k = 0; k < 20; k++)
                     {
-                        for (l = k; l < 20; l++)
+                        for (l = 0; l < 20; l++)
                         {
                             if (pairs[k, l] == 0.0) continue;
                             sumHxy += pairs[k, l] / total * (Math.Log(pairs[k, l] / total) / Math.Log(20));
                         }
                     }
-                    MIs[i, j] = MIs[j, i] = -sumHx - sumHy + sumHxy;
+                    // Normalization:  / -sumHxy
+                    if (i == j || sumHxy == 0) MIs[i, i] = 0;
+                    else MIs[i, j] = MIs[j, i] = (-sumHx - sumHy + sumHxy) / -sumHxy;
                 }
             });
             var zscores = MIs.CalculateZscore();

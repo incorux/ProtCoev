@@ -118,6 +118,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Proteins\GBE1.zip" />
+    <None Include="Proteins\GBE1_Uniprot_nieredundantne.fasta" />
+    <None Include="Proteins\GDE.zip" />
+    <None Include="Proteins\GDE_Uniprot_nieredundantne.fasta" />
+    <None Include="Proteins\GYS1.zip" />
+    <None Include="Proteins\GYS1_Uniprot_nieredundantny.fasta" />
+    <None Include="Proteins\GYS2.zip" />
+    <None Include="Proteins\GYS2_Uniprot_nieredundantny.fasta" />
+    <None Include="Proteins\PYGL.zip" />
+    <None Include="Proteins\PYGL_Uniprot_nieredundantny.fasta" />
+    <None Include="Proteins\PYGM.zip" />
+    <None Include="Proteins\PYGM_Uniprot_nieredundantny.fasta" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

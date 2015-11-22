@@ -122,6 +122,7 @@ namespace ProteinCoev
             var len = Math.Abs(richTextBox.SelectionLength % seqLength);
             var caret = richTextBox.SelectionStart;
             var column = caret % (seqLength + 1);
+            if (column == seqLength) column--;
             if (len == 0)
             {
                 positionLabel.Text = String.Format("Column: {0}", column);
