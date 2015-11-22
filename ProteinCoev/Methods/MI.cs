@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,21 +15,21 @@ namespace ProteinCoev
         private List<int> columns;
         private double[,] Zscores;
         private char[,] alg;
-        public MI(List<Protein> proteins, List<int> columns = null)
+        public MI(List<Protein> proteins, List<int> columns)
         {
             alg = proteins.ToCharArray();
             _count = alg.GetLength(0);
             _length = alg.GetLength(1);
-            if (columns == null) return;
+            if (columns.Count == 0) return;
             this.columns = columns;
             _length = columns.Count;
         }
-        public MI(char[,] alg, List<int> columns = null)
+        public MI(char[,] alg, List<int> columns)
         {
             this.alg = alg;
             _count = alg.GetLength(0);
             _length = alg.GetLength(1);
-            if (columns == null) return;
+            if (columns.Count == 0) return;
             this.columns = columns;
             _length = columns.Count;
         }

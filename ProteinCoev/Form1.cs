@@ -6,13 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using ProteinCoev.Plotting;
 
 namespace ProteinCoev
 {
     public partial class Form1 : Form
     {
         // GLOBAL VARIABLES
-        private Color _highlightColor = Color.Gray;
+        private Color _highlightColor = Color.SlateGray;
         private List<string> OrganismList = new List<string>();
         private Worker _worker;
         private String rawFileName;
@@ -23,14 +24,15 @@ namespace ProteinCoev
             InitializeComponent();
             AlignmentTabs.Controls.Clear();
             ColorButton.BackColor = _highlightColor;
-            //            comboOrganisms.DropDownStyle = ComboBoxStyle.DropDown;
-            //            comboOrganisms.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            //            comboOrganisms.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
 
         private void LoadFileButtonClick(object sender, EventArgs e)
         {
-            var ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog
+                      {
+                          Filter =
+                              "All files (*.*)|*.*|Fasta files|*.fasta"
+                      };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 ParseFile(ofd.FileName);
@@ -88,7 +90,7 @@ namespace ProteinCoev
             if (_worker == null)
                 _worker = new Worker(progressBar);
             if (_worker.IsBusy) return;
-
+            if (proteins == null) return;
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             tab.DrawAlignments();
 
@@ -102,6 +104,7 @@ namespace ProteinCoev
                             UseBase = checkBase.Checked,
                             UseTailing = checkTailing.Checked
                         });
+            tab.HighlightBase(_highlightColor);
         }
 
         private void ColorButtonClick(object sender, EventArgs e)
@@ -110,6 +113,10 @@ namespace ProteinCoev
             if (cd.ShowDialog() != DialogResult.OK) return;
             _highlightColor = cd.Color;
             ColorButton.BackColor = cd.Color;
+            foreach (var alignmentTab in AlignmentTabs.Controls)
+            {
+                (alignmentTab as Tab).HighlightBase(_highlightColor);
+            }
         }
 
         private void ComboOrganismsSelectedIndexChanged(object sender, EventArgs e)
@@ -126,8 +133,7 @@ namespace ProteinCoev
             var sw = new Stopwatch();
             sw.Start();
             var zscores = mi.GetZscores();
-            var form = new Form2(zscores);
-            form.Show();
+            show3DPlot(zscores);
             WriteToFile(zscores, String.Concat(tab.Label + "_", "MI"));
         }
 
@@ -139,8 +145,7 @@ namespace ProteinCoev
             var mis = mi.GetZscores();
             var MIp = new MIp(mis);
             var zscores = MIp.GetMIps();
-            var form = new Form2(zscores);
-            form.Show();
+            show3DPlot(zscores);
             WriteToFile(zscores, String.Concat(tab.Label + "_", "MIp"));
         }
 
@@ -149,8 +154,7 @@ namespace ProteinCoev
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var di = new DI(proteins, tab.BaseColumns);
             var zscores = di.getDI();
-            var form = new Form2(zscores);
-            form.Show();
+            show3DPlot(zscores);
             WriteToFile(zscores, String.Concat(tab.Label + "_", "DI"));
         }
 
@@ -159,8 +163,7 @@ namespace ProteinCoev
             var tab = ((Tab)AlignmentTabs.SelectedTab);
             var arr = proteins.ToCharArrayRestricted(tab.BaseColumns);
             var zscores = new Psicov(arr).GetPsicov();
-            var form = new Form2(zscores);
-            form.Show();
+            show3DPlot(zscores);
             WriteToFile(zscores, String.Concat(tab.Label + "_", "Psicov"));
         }
 
@@ -215,8 +218,8 @@ namespace ProteinCoev
             var arr1 = (double[,])bf.Deserialize(new FileStream(file1, FileMode.Open));
             var arr2 = (double[,])bf.Deserialize(new FileStream(file2, FileMode.Open));
 
-            var form2 = new Form2(arr1, arr2);
-            form2.ShowDialog();
+            /*var form2 = new Form2(arr1, arr2);
+            form2.ShowDialog();*/
         }
 
         private void SearchForStringButtonClick(object sender, EventArgs e)
@@ -238,7 +241,30 @@ namespace ProteinCoev
 
         private void CreateTreeButtonClick(object sender, EventArgs e)
         {
-            Phylogeny.ExportToFile(proteins);
+            var tab = (Tab)AlignmentTabs.SelectedTab;
+            Phylogeny.ExportToFile(tab.Proteins);
+        }
+
+        private void ResetSelectionClick(object sender, EventArgs e)
+        {
+            var tab = (Tab)AlignmentTabs.SelectedTab;
+            tab.DrawAlignments();
+        }
+
+        private void Button6Click(object sender, EventArgs e)
+        {
+            var append = ModifierKeys == Keys.Control;
+            var start = (int)SelectionRangeStartControl.Value;
+            var end = (int)SelectionRangeEndControl.Value;
+            var tab = (Tab)AlignmentTabs.SelectedTab;
+
+            tab.AddBaseColumnsRange(start, end, append);
+        }
+
+        private void show3DPlot(Double[,] zscores)
+        {
+            var form = new Plot3DMainForm(zscores);
+            form.Show();
         }
     }
 }

@@ -317,7 +317,6 @@ namespace ProteinCoev
                     pa[i, a] /= pseudoc * 21.0 + wtsum;
             }
 
-
             ndim = seqlen * 21;
             var rho = new double[ndim, ndim];
             var ww = new double[ndim, ndim];

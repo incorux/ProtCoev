@@ -17,7 +17,8 @@ namespace ProteinCoev
         private RichTextBox alignmentArea;
         private Label positionLabel;
         private int lastStart, lastLen;
-        private Color color = Color.LightGray;
+        private Color _color = Color.SlateGray;
+        private Color searchColor = Color.Tomato;
 
         private Color selectionColor
         {
@@ -43,11 +44,12 @@ namespace ProteinCoev
             get { return base.Text; }
             set { base.Text = value; }
         }
-        public void HighlightBase(Color color)
+        public void HighlightBase(Color? color)
         {
+            _color = color ?? _color;
             foreach (var baseColumn in BaseColumns)
             {
-                HighlightColumn(color, baseColumn);
+                HighlightColumn(_color, baseColumn);
             }
         }
         private void HighlightRow(Color color, int row)
@@ -83,7 +85,7 @@ namespace ProteinCoev
             {
                 alignmentArea.SelectionStart = start + point.Y + point.X * seqLength + point.X;
                 alignmentArea.SelectionLength = len;
-                alignmentArea.SelectionBackColor = Color.Tomato;
+                alignmentArea.SelectionBackColor = searchColor;
             }
         }
 
@@ -100,6 +102,7 @@ namespace ProteinCoev
         }
         public void DrawAlignments(string organism = "All")
         {
+            BaseColumns.Clear();
             alignmentArea.Text = "";
             var arr = Proteins.ToCharArray();
             for (var i = 0; i < Proteins.Count; i++)
@@ -124,10 +127,13 @@ namespace ProteinCoev
                 positionLabel.Text = String.Format("Column: {0}", column);
                 return;
             }
-            HighlightBlock(Color.LightGray, lastStart, lastLen);
+            if (ModifierKeys != Keys.Control)
+            {
+                HighlightBlock(Color.LightGray, lastStart, lastLen);
+                BaseColumns.Clear();
+            }
             HighlightBlock(selectionColor, column, len);
 
-            BaseColumns.Clear();
             for (var i = column; i < column + len; i++)
             {
                 BaseColumns.Add(i);
@@ -140,6 +146,26 @@ namespace ProteinCoev
             richTextBox.SelectionLength = len;
 
             positionLabel.Text += String.Format("\n{0} columns selected", len);
+        }
+
+        public void AddBaseColumnsRange(int start, int end, bool append = false)
+        {
+            if (end < start)
+            {
+                var temp = end;
+                end = start;
+                start = temp;
+            }
+            if (!append)
+            {
+                DrawAlignments();
+                BaseColumns.Clear();
+            }
+            for (var i = start; i < end; i++)
+            {
+                BaseColumns.Add(i);
+            }
+            HighlightBlock(selectionColor, start, end - start);
         }
     }
 }

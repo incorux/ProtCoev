@@ -109,14 +109,14 @@ namespace ProteinCoev
         }
         public static char[,] ToCharArrayRestricted(this List<Protein> proteins, List<int> columns)
         {
-            var len = columns == null ? proteins.First().Sequence.Length : columns.Count;
+            var len = columns.Count == 0 ? proteins.First().Sequence.Length : columns.Count;
             var arr = new char[proteins.Count, len];
             var fullArray = proteins.ToCharArray();
             for (var j = 0; j < proteins.Count; j++)
             {
                 for (int k = 0; k < len; k++)
                 {
-                    var index = columns == null ? k : columns[k];
+                    var index = columns.Count == 0 ? k : columns[k];
                     arr[j, k] = fullArray[j, index];
                 }
             }

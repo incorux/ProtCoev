@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>Libs\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -53,19 +56,10 @@
       <DependentUpon>ArrayVisualizer.cs</DependentUpon>
     </Compile>
     <Compile Include="Blosum.cs" />
-    <Compile Include="DI.cs" />
-    <Compile Include="Form2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GraphOptions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GraphOptions.Designer.cs">
-      <DependentUpon>GraphOptions.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Plotting\ColorHSV.cs" />
+    <Compile Include="Plotting\ColorRGB.cs" />
+    <Compile Include="Plotting\ColorSchema.cs" />
+    <Compile Include="Methods\DI.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Form1.cs">
@@ -74,13 +68,21 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="MI.cs" />
-    <Compile Include="MIp.cs" />
-    <Compile Include="Phylogeny.cs" />
+    <Compile Include="Methods\MI.cs" />
+    <Compile Include="Methods\MIp.cs" />
+    <Compile Include="Methods\Phylogeny.cs" />
+    <Compile Include="Plotting\ColorHsl.cs" />
+    <Compile Include="Plotting\Plot3DMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Plotting\Plot3DMainForm.Designer.cs">
+      <DependentUpon>Plot3DMainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protein.cs" />
-    <Compile Include="Psicov.cs" />
+    <Compile Include="Methods\Psicov.cs" />
+    <Compile Include="Plotting\Surface3DRenderer.cs" />
     <Compile Include="Tab.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -94,11 +96,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphOptions.resx">
-      <DependentUpon>GraphOptions.cs</DependentUpon>
+    <EmbeddedResource Include="Plotting\Plot3DMainForm.resx">
+      <DependentUpon>Plot3DMainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -108,6 +107,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

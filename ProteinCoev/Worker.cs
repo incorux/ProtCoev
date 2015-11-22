@@ -23,7 +23,7 @@ namespace ProteinCoev
 
         void WorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //_tab.HighlightBase(Color.Gray);
+            _tab.HighlightBase(null);
             _pb.Value = 100;
         }
 
